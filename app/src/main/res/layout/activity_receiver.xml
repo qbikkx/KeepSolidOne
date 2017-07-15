@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:tools="http://schemas.android.com/tools"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="dev.qbikkx.keepsolidone.ReceiverActivity">
+
+    <TextView
+        android:id="@+id/tv_received_text"
+        android:textSize="@dimen/default_text_size"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        style="?android:listSeparatorTextViewStyle"/>
+
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_below="@+id/tv_received_text">
+        <Button
+            android:id="@+id/btn_confirm"
+            android:text="@string/btn_confirm"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/btn_margin"
+            />
+        <Button
+            android:id="@+id/btn_cancel"
+            android:text="@string/btn_cancel"
+            android:layout_toEndOf="@+id/btn_confirm"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/btn_margin"/>
+    </RelativeLayout>
+</RelativeLayout>

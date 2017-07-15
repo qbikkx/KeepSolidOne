@@ -3,4 +3,13 @@
     <string name="action_settings">Settings</string>
     <string name="secret">Secret message :)</string>
     <string name="hello_keep_solid">Hello KeepSolid</string>
+    <string name="btn_send">Send</string>
+    <string name="btn_clear">Clear</string>
+    <string name="et_input_hint">Write smth..</string>
+    <string name="btn_confirm">Confirm</string>
+    <string name="btn_cancel">Cancel</string>
+    <string name="text_confirmed">Text confirmed!</string>
+    <string name="text_canceled">Text canceled :(</string>
+    <string name="receiver_activity_label">Receiver</string>
+    <string name="main_activity_label">HomeWork#3 Easy level</string>
 </resources>
