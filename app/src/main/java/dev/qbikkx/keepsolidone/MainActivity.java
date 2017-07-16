@@ -42,8 +42,8 @@ public class MainActivity extends AppCompatActivity {
             }
 
             /**
-             * Блокировка кнопок при пустом поле гарантирует, что далее будет передаваться
-             * непустая строка
+             * Disabling buttons when input field is empty
+             * ensures that a non-empty string will be passed next
              */
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
@@ -116,18 +116,8 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-
-
     private boolean isSendCheckBoxChecked() {
         return isSendEnabledCheckBox.isChecked();
-    }
-
-    private void setSendBtnState(boolean isEnabled) {
-        sendBtn.setEnabled(isEnabled);
-    }
-
-    private void setClearBtnState(boolean isEnabled) {
-        clearBtn.setEnabled(isEnabled);
     }
 
     private boolean isInputNullOrEmpty() {
@@ -137,6 +127,14 @@ public class MainActivity extends AppCompatActivity {
 
     private boolean isClearBtnEnabled() {
         return clearBtn.isEnabled();
+    }
+
+    private void setSendBtnState(boolean isEnabled) {
+        sendBtn.setEnabled(isEnabled);
+    }
+
+    private void setClearBtnState(boolean isEnabled) {
+        clearBtn.setEnabled(isEnabled);
     }
 
     private void setBothButtonsState(boolean isEnabled) {
