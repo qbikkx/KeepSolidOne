@@ -7,9 +7,16 @@ import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.View;
 import android.widget.Button;
+import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.Toast;
 
+/**
+ * MainActivity.
+ *
+ * @author <a href="mailto:qbikkx@gmail.com">qbikkx</a>
+ */
 public class MainActivity extends AppCompatActivity {
     public final static String EXTRA_INPUT_TEXT = "input_text";
 
@@ -21,6 +28,7 @@ public class MainActivity extends AppCompatActivity {
     private EditText inputEditText;
     private Button sendBtn;
     private Button clearBtn;
+    private CheckBox isSendEnabledCheckBox;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -28,7 +36,6 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         inputEditText = (EditText) findViewById(R.id.et_input);
-        sendBtn = (Button) findViewById(R.id.btn_send);
         inputEditText.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -40,10 +47,13 @@ public class MainActivity extends AppCompatActivity {
              */
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-                if (s == null || s.length() == 0) {
-                    setButtonsState(BTN_STATE_NOT_ENABLED);
-                } else if (!isButtonsEnabled()) {
-                    setButtonsState(BTN_STATE_ENABLED);
+                if (isInputNullOrEmpty()) {
+                    setBothButtonsState(BTN_STATE_NOT_ENABLED);
+                } else if (!isClearBtnEnabled()) {
+                    setClearBtnState(BTN_STATE_ENABLED);
+                    if (isSendCheckBoxChecked()) {
+                        setSendBtnState(BTN_STATE_ENABLED);
+                    }
                 }
             }
 
@@ -52,14 +62,33 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+        isSendEnabledCheckBox = (CheckBox) findViewById(R.id.cb_is_send_enabled);
+        isSendEnabledCheckBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if (isChecked && !isInputNullOrEmpty()) {
+                    setSendBtnState(BTN_STATE_ENABLED);
+                } else {
+                    setSendBtnState(BTN_STATE_NOT_ENABLED);
+                }
+            }
+        });
+
+
+        sendBtn = (Button) findViewById(R.id.btn_send);
         sendBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent senderIntent = new Intent(MainActivity.this, ReceiverActivity.class);
-                senderIntent.putExtra(EXTRA_INPUT_TEXT, inputEditText.getText().toString());
-                startActivityForResult(senderIntent, REQUEST_CODE_SEND_BTN_ACTION);
+                if (EmailUtils.isValidEmail(inputEditText.getText())) {
+                    Intent senderIntent = new Intent(MainActivity.this, SenderActivity.class);
+                    senderIntent.putExtra(EXTRA_INPUT_TEXT, inputEditText.getText().toString());
+                    startActivityForResult(senderIntent, REQUEST_CODE_SEND_BTN_ACTION);
+                } else {
+                    showToast(R.string.incorrect_email_msg);
+                }
             }
         });
+
         clearBtn = (Button) findViewById(R.id.btn_clear);
         clearBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -80,25 +109,55 @@ public class MainActivity extends AppCompatActivity {
                 case RESULT_CANCELED:
                     resultCanceled();
                     break;
+                case SenderActivity.RESULT_CODE_CANCELED_EMAIL:
+                    resultEmailNotSent();
+                    break;
             }
         }
     }
 
-    private boolean isButtonsEnabled() {
-        return sendBtn.isEnabled();
+
+
+    private boolean isSendCheckBoxChecked() {
+        return isSendEnabledCheckBox.isChecked();
     }
 
-    private void setButtonsState(boolean isEnabled) {
+    private void setSendBtnState(boolean isEnabled) {
         sendBtn.setEnabled(isEnabled);
+    }
+
+    private void setClearBtnState(boolean isEnabled) {
         clearBtn.setEnabled(isEnabled);
+    }
+
+    private boolean isInputNullOrEmpty() {
+        CharSequence charSequence = inputEditText.getText();
+        return charSequence == null || charSequence.length() == 0;
+    }
+
+    private boolean isClearBtnEnabled() {
+        return clearBtn.isEnabled();
+    }
+
+    private void setBothButtonsState(boolean isEnabled) {
+        setSendBtnState(isEnabled);
+        setClearBtnState(isEnabled);
     }
 
     private void resultOk() {
         inputEditText.setText("");
-        Toast.makeText(this, R.string.text_confirmed, Toast.LENGTH_LONG).show();
+        showToast(R.string.text_confirmed);
+    }
+
+    private void resultEmailNotSent() {
+        showToast(R.string.email_didnt_sent);
     }
 
     private void resultCanceled() {
-        Toast.makeText(this, R.string.text_canceled, Toast.LENGTH_LONG).show();
+        showToast(R.string.text_canceled);
+    }
+
+    private void showToast(int msgId) {
+        Toast.makeText(this, msgId, Toast.LENGTH_LONG).show();
     }
 }

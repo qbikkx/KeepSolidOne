@@ -19,7 +19,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".ReceiverActivity"
+            android:name=".SenderActivity"
             android:label="@string/receiver_activity_label" />
     </application>
 
