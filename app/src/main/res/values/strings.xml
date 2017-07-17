@@ -2,7 +2,7 @@
     <string name="app_name">KeepSolidOne</string>
 
     <string name="main_activity_label">HomeWork#3 Hard level</string>
-    <string name="receiver_activity_label">Receiver</string>
+    <string name="receiver_activity_label">Sender</string>
 
     <string name="btn_send">Send</string>
     <string name="btn_clear">Clear</string>

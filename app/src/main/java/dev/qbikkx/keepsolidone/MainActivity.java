@@ -22,7 +22,7 @@ public class MainActivity extends AppCompatActivity {
 
     private final static int REQUEST_CODE_SEND_BTN_ACTION = 1;
 
-    private final static boolean BTN_STATE_NOT_ENABLED = false;
+    private final static boolean BTN_STATE_DISABLED = false;
     private final static boolean BTN_STATE_ENABLED = true;
 
     private EditText inputEditText;
@@ -48,7 +48,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
                 if (isInputNullOrEmpty()) {
-                    setBothButtonsState(BTN_STATE_NOT_ENABLED);
+                    setBothButtonsState(BTN_STATE_DISABLED);
                 } else if (!isClearBtnEnabled()) {
                     setClearBtnState(BTN_STATE_ENABLED);
                     if (isSendCheckBoxChecked()) {
@@ -69,7 +69,7 @@ public class MainActivity extends AppCompatActivity {
                 if (isChecked && !isInputNullOrEmpty()) {
                     setSendBtnState(BTN_STATE_ENABLED);
                 } else {
-                    setSendBtnState(BTN_STATE_NOT_ENABLED);
+                    setSendBtnState(BTN_STATE_DISABLED);
                 }
             }
         });
