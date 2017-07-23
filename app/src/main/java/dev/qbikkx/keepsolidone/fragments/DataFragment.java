@@ -50,9 +50,13 @@ public class DataFragment extends SwitcherFragment {
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_data, container, false);
+        initUI(rootView);
+        updateUI();
+        return rootView;
+    }
 
+    private void initUI(View rootView) {
         inputEditText = (EditText) rootView.findViewById(R.id.et_input);
-        inputEditText.setText(getText());
         inputEditText.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -78,7 +82,6 @@ public class DataFragment extends SwitcherFragment {
             public void afterTextChanged(Editable s) {
             }
         });
-
         isSendEnabledSwitch = (Switch) rootView.findViewById(R.id.sw_is_send_enabled);
         isSendEnabledSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
@@ -113,10 +116,14 @@ public class DataFragment extends SwitcherFragment {
                 inputEditText.setText("");
             }
         });
-
-        return rootView;
     }
 
+    /**
+     * Заполнение всех виджетов после их создания
+     */
+    private void updateUI() {
+        inputEditText.setText(getText());
+    }
 
     private boolean isSendSwitchChecked() {
         return isSendEnabledSwitch.isChecked();

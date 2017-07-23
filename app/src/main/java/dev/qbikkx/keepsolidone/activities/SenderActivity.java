@@ -56,15 +56,30 @@ public class SenderActivity extends AppCompatActivity {
         cancelBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent();
-                intent.putExtra(DataFragment.EXTRA_INPUT_TEXT, textView.getText().toString());
-                setResult(RESULT_CANCELED, intent);
+                setResultCancel();
                 finish();
             }
         });
     }
 
+    /**
+     * BackStack отрабатывает как кнопка cancelBtn
+     */
+    @Override
+    public void onBackPressed() {
+        setResultCancel();
+        super.onBackPressed();
+    }
 
+    private void setResultCancel() {
+        Intent intent = new Intent();
+        intent.putExtra(DataFragment.EXTRA_INPUT_TEXT, textView.getText().toString());
+        setResult(RESULT_CANCELED, intent);
+    }
+
+    /**
+     * finish with custom animation
+     */
     @Override
     public void finish() {
         super.finish();
