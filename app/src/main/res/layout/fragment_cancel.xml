@@ -1,0 +1,23 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="dev.qbikkx.keepsolidone.fragments.CancelFragment">
+
+    <ImageView
+        android:id="@+id/iv_cancel"
+        android:layout_width="256dp"
+        android:layout_height="256dp"
+        android:layout_centerInParent="true"
+        android:contentDescription="@string/img_cancel"
+        android:src="@drawable/cancel1600" />
+
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:text="@string/text_canceled"
+        android:textSize="@dimen/default_text_size" />
+</RelativeLayout>

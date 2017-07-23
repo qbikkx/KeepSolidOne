@@ -12,12 +12,13 @@
     <string name="et_input_hint">enter email address</string>
 
     <string name="text_confirmed">Email sent</string>
-    <string name="email_didnt_sent">Email didn\'t sent</string>
     <string name="text_canceled">Email is wrong</string>
 
-    <string name="cb_is_send_enabled">Send enabled</string>
+    <string name="sw_is_send_enabled">Send enabled</string>
     <string name="incorrect_email_msg">Incorrect Email</string>
     <string name="mail_subject">Epic email subject</string>
     <string name="mail_body">Hello from qbikkx</string>
     <string name="send_email_msg">Sending email</string>
+    <string name="img_ok">OK</string>
+    <string name="img_cancel">Cancel</string>
 </resources>

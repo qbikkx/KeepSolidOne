@@ -2,48 +2,13 @@
 <RelativeLayout
     xmlns:tools="http://schemas.android.com/tools"
     xmlns:android="http://schemas.android.com/apk/res/android"
-    tools:context="dev.qbikkx.keepsolidone.MainActivity"
+    tools:context="dev.qbikkx.keepsolidone.activities.MainActivity"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <EditText
-        android:id="@+id/et_input"
-        android:hint="@string/et_input_hint"
+    <FrameLayout
+        android:id="@+id/fl_fragment_container"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-    />
-
-    <RelativeLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_centerHorizontal="true"
-        android:layout_below="@+id/et_input">
-
-        <CheckBox
-            android:id="@+id/cb_is_send_enabled"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/cb_is_send_enabled"
-            android:layout_centerVertical="true"
-            />
-
-        <Button
-            android:id="@+id/btn_send"
-            android:text="@string/btn_send"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_toEndOf="@+id/cb_is_send_enabled"
-            android:enabled="false"
-            android:layout_margin="@dimen/btn_margin"
-             />
-        <Button
-            android:id="@+id/btn_clear"
-            android:text="@string/btn_clear"
-            android:layout_toEndOf="@+id/btn_send"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:enabled="false"
-            android:layout_margin="@dimen/btn_margin"/>
-    </RelativeLayout>
+        android:layout_height="match_parent" />
 
 </RelativeLayout>

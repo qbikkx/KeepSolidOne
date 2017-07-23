@@ -1,26 +1,30 @@
-package dev.qbikkx.keepsolidone;
+package dev.qbikkx.keepsolidone.fragments;
 
-import android.content.Intent;
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
+import android.support.annotation.Nullable;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.EditText;
+import android.widget.Switch;
 import android.widget.Toast;
 
+import dev.qbikkx.keepsolidone.R;
+import dev.qbikkx.keepsolidone.utils.EmailUtils;
+
 /**
- * MainActivity.
+ * DataFragment
  *
  * @author <a href="mailto:qbikkx@gmail.com">qbikkx</a>
  */
-public class MainActivity extends AppCompatActivity {
-    public final static String EXTRA_INPUT_TEXT = "input_text";
+public class DataFragment extends SwitcherFragment {
+    public final static String TAG = "DataFragment";
 
-    private final static int REQUEST_CODE_SEND_BTN_ACTION = 1;
+    public final static String EXTRA_INPUT_TEXT = "input_text";
 
     private final static boolean BTN_STATE_DISABLED = false;
     private final static boolean BTN_STATE_ENABLED = true;
@@ -28,14 +32,27 @@ public class MainActivity extends AppCompatActivity {
     private EditText inputEditText;
     private Button sendBtn;
     private Button clearBtn;
-    private CheckBox isSendEnabledCheckBox;
+    private Switch isSendEnabledSwitch;
 
+
+    public static DataFragment newInstance(Bundle params) {
+        DataFragment fragment = new DataFragment();
+        fragment.setArguments(params);
+        return fragment;
+    }
+
+    private String getText() {
+        Bundle arguments = getArguments();
+        return arguments != null ? arguments.getString(EXTRA_INPUT_TEXT) : null;
+    }
+
+    @Nullable
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        View rootView = inflater.inflate(R.layout.fragment_data, container, false);
 
-        inputEditText = (EditText) findViewById(R.id.et_input);
+        inputEditText = (EditText) rootView.findViewById(R.id.et_input);
+        inputEditText.setText(getText());
         inputEditText.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -51,7 +68,7 @@ public class MainActivity extends AppCompatActivity {
                     setBothButtonsState(BTN_STATE_DISABLED);
                 } else if (!isClearBtnEnabled()) {
                     setClearBtnState(BTN_STATE_ENABLED);
-                    if (isSendCheckBoxChecked()) {
+                    if (isSendSwitchChecked()) {
                         setSendBtnState(BTN_STATE_ENABLED);
                     }
                 }
@@ -62,8 +79,8 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        isSendEnabledCheckBox = (CheckBox) findViewById(R.id.cb_is_send_enabled);
-        isSendEnabledCheckBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+        isSendEnabledSwitch = (Switch) rootView.findViewById(R.id.sw_is_send_enabled);
+        isSendEnabledSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 if (isChecked && !isInputNullOrEmpty()) {
@@ -75,49 +92,34 @@ public class MainActivity extends AppCompatActivity {
         });
 
 
-        sendBtn = (Button) findViewById(R.id.btn_send);
+        sendBtn = (Button) rootView.findViewById(R.id.btn_send);
         sendBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if (EmailUtils.isValidEmail(inputEditText.getText())) {
-                    Intent senderIntent = new Intent(MainActivity.this, SenderActivity.class);
-                    senderIntent.putExtra(EXTRA_INPUT_TEXT, inputEditText.getText().toString());
-                    startActivityForResult(senderIntent, REQUEST_CODE_SEND_BTN_ACTION);
+                    Bundle bundle = new Bundle();
+                    bundle.putString(EXTRA_INPUT_TEXT, inputEditText.getText().toString());
+                    mScreenSwitcher.switchScreenByTag(TAG, bundle);
                 } else {
                     showToast(R.string.incorrect_email_msg);
                 }
             }
         });
 
-        clearBtn = (Button) findViewById(R.id.btn_clear);
+        clearBtn = (Button) rootView.findViewById(R.id.btn_clear);
         clearBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 inputEditText.setText("");
             }
         });
+
+        return rootView;
     }
 
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        if (REQUEST_CODE_SEND_BTN_ACTION == requestCode) {
-            switch (resultCode) {
-                case RESULT_OK:
-                    resultOk();
-                    break;
-                case RESULT_CANCELED:
-                    resultCanceled();
-                    break;
-                case SenderActivity.RESULT_CODE_CANCELED_EMAIL:
-                    resultEmailNotSent();
-                    break;
-            }
-        }
-    }
 
-    private boolean isSendCheckBoxChecked() {
-        return isSendEnabledCheckBox.isChecked();
+    private boolean isSendSwitchChecked() {
+        return isSendEnabledSwitch.isChecked();
     }
 
     private boolean isInputNullOrEmpty() {
@@ -142,20 +144,7 @@ public class MainActivity extends AppCompatActivity {
         setClearBtnState(isEnabled);
     }
 
-    private void resultOk() {
-        inputEditText.setText("");
-        showToast(R.string.text_confirmed);
-    }
-
-    private void resultEmailNotSent() {
-        showToast(R.string.email_didnt_sent);
-    }
-
-    private void resultCanceled() {
-        showToast(R.string.text_canceled);
-    }
-
     private void showToast(int msgId) {
-        Toast.makeText(this, msgId, Toast.LENGTH_LONG).show();
+        Toast.makeText(getActivity(), msgId, Toast.LENGTH_LONG).show();
     }
 }

@@ -15,9 +15,11 @@
     <string name="email_didnt_sent">Email не отправлен</string>
     <string name="text_canceled">Email не верный</string>
 
-    <string name="cb_is_send_enabled">Отправка</string>
+    <string name="sw_is_send_enabled">Отправка</string>
     <string name="incorrect_email_msg">Неверный Email</string>
     <string name="mail_subject">Эпический заголовок письма</string>
     <string name="mail_body">Привет от qbikkx</string>
     <string name="send_email_msg">Отправка email\'a</string>
+    <string name="img_ok">Всё супер</string>
+    <string name="img_cancel">Отмена</string>
 </resources>

@@ -1,4 +1,4 @@
-package dev.qbikkx.keepsolidone;
+package dev.qbikkx.keepsolidone.utils;
 
 import android.text.TextUtils;
 
