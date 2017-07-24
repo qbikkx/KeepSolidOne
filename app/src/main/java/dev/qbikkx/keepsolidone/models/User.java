@@ -1,16 +1,13 @@
 package dev.qbikkx.keepsolidone.models;
 
-import android.support.annotation.NonNull;
-
 import java.util.Comparator;
 import java.util.UUID;
 
 import dev.qbikkx.keepsolidone.R;
 
 /**
- * Created by earlw on 23.07.2017.
+ * @author <a href="mailto:qbikkx@gmail.com">qbikkx</a>
  */
-
 public class User {
 
     private UUID mId;
@@ -74,6 +71,9 @@ public class User {
         this.mCategory = mCategory;
     }
 
+    /**
+     * id - единственно уникальное поле - гарант равенства
+     */
     @Override
     public boolean equals(Object obj) {
         if (obj instanceof User) {
@@ -83,6 +83,10 @@ public class User {
         return false;
     }
 
+    /**
+     * Не придумал как обыграть хешкод основываясь на UUID
+     * так что использовал его внутренний hashCode
+     */
     @Override
     public int hashCode() {
         return mId.hashCode();

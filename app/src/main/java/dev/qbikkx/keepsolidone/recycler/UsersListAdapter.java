@@ -10,7 +10,7 @@ import java.util.List;
 import dev.qbikkx.keepsolidone.models.User;
 
 /**
- * Created by earlw on 23.07.2017.
+ * @author <a href="mailto:qbikkx@gmail.com">qbikkx</a>
  */
 
 public class UsersListAdapter extends RecyclerView.Adapter<UserHolder> {

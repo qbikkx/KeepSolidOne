@@ -13,9 +13,8 @@ import android.widget.ImageView;
 import dev.qbikkx.keepsolidone.R;
 
 /**
- * Created by earlw on 24.07.2017.
+ * @author <a href="mailto:qbikkx@gmail.com">qbikkx</a>
  */
-
 public class CancelDialog extends DialogFragment {
     public final static String TAG = "CancelDialog";
     @NonNull

@@ -26,9 +26,8 @@ import dev.qbikkx.keepsolidone.recycler.UsersListAdapter;
 import dev.qbikkx.keepsolidone.utils.Constants;
 
 /**
- * Created by earlw on 23.07.2017.
+ * @author <a href="mailto:qbikkx@gmail.com">qbikkx</a>
  */
-
 public class UsersListFragment extends AppCompatDialogFragment {
     public final static String TAG = "UsersListFragment";
 

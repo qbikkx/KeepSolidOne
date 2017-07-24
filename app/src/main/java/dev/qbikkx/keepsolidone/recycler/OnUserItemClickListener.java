@@ -3,7 +3,7 @@ package dev.qbikkx.keepsolidone.recycler;
 import android.view.View;
 
 /**
- * Created by earlw on 23.07.2017.
+ * @author <a href="mailto:qbikkx@gmail.com">qbikkx</a>
  */
 
 public interface OnUserItemClickListener {

@@ -1,12 +1,10 @@
 package dev.qbikkx.keepsolidone.dialogs;
 
 import android.app.Dialog;
-import android.content.Context;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.DialogFragment;
-import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutCompat;
 import android.view.View;
 import android.view.Window;
@@ -15,7 +13,7 @@ import android.widget.ImageView;
 import dev.qbikkx.keepsolidone.R;
 
 /**
- * Created by earlw on 24.07.2017.
+ * @author <a href="mailto:qbikkx@gmail.com">qbikkx</a>
  */
 
 public class OkDialog extends DialogFragment {
