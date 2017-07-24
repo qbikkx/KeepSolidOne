@@ -19,8 +19,8 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".activities.SenderActivity"
-            android:label="@string/receiver_activity_label" />
+            android:name=".activities.UserActivity"
+            android:label="@string/user_activity_label" />
     </application>
 
 </manifest>

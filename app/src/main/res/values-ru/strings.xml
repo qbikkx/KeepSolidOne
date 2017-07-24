@@ -1,8 +1,8 @@
 <resources>
     <string name="app_name">KeepSolidOne</string>
 
-    <string name="main_activity_label">HomeWork#4 Hard level</string>
-    <string name="receiver_activity_label">Отправитель</string>
+    <string name="main_activity_label">HomeWork#5 Hard level</string>
+    <string name="user_activity_label">Пользователь</string>
 
     <string name="btn_send">Отправить</string>
     <string name="btn_clear">Очистить</string>
@@ -13,7 +13,7 @@
 
     <string name="text_confirmed">Email отправлен</string>
     <string name="email_didnt_sent">Email не отправлен</string>
-    <string name="text_canceled">Email не верный</string>
+    <string name="text_canceled">Email не отправлен</string>
 
     <string name="sw_is_send_enabled">Отправка</string>
     <string name="incorrect_email_msg">Неверный Email</string>
@@ -22,4 +22,9 @@
     <string name="send_email_msg">Отправка email\'a</string>
     <string name="img_ok">Всё супер</string>
     <string name="img_cancel">Отмена</string>
+
+    <string name="category_friend">Друзья</string>
+    <string name="category_family">Семья</string>
+    <string name="category_work">Работа</string>
+    <string name="category_other">Другое</string>
 </resources>

@@ -2,12 +2,13 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="dev.qbikkx.keepsolidone.fragments.OkFragment">
+    tools:context="dev.qbikkx.keepsolidone.dialogs.OkDialog">
 
     <ImageView
         android:id="@+id/iv_ok"
-        android:layout_width="256dp"
-        android:layout_height="256dp"
+        android:layout_width="128dp"
+        android:layout_height="128dp"
+        android:layout_margin="@dimen/btn_margin"
         android:layout_centerInParent="true"
         android:contentDescription="@string/img_ok"
         android:src="@drawable/quees" />
@@ -16,7 +17,8 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
+        android:layout_below="@+id/iv_ok"
+        android:textColor="#FFFFFF"
         android:layout_centerHorizontal="true"
         android:text="@string/text_confirmed"
         android:textSize="@dimen/default_text_size" />
