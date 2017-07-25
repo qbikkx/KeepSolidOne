@@ -17,6 +17,7 @@ import dev.qbikkx.keepsolidone.R;
  */
 public class CancelDialog extends DialogFragment {
     public final static String TAG = "CancelDialog";
+
     @NonNull
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
@@ -31,7 +32,10 @@ public class CancelDialog extends DialogFragment {
             }
         });
         builder.requestWindowFeature(Window.FEATURE_NO_TITLE);
-        builder.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
+        Window window = builder.getWindow();
+        if (window != null) {
+            window.setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
+        }
         builder.setContentView(rootView);
         return builder;
     }

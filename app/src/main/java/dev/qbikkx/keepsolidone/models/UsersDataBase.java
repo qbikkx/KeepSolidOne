@@ -10,7 +10,6 @@ import java.util.UUID;
  *
  * @author <a href="mailto:qbikkx@gmail.com">qbikkx</a>
  */
-
 public class UsersDataBase {
     private static UsersDataBase instance;
 

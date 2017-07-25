@@ -3,7 +3,6 @@ package dev.qbikkx.keepsolidone.fragments;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.ParcelUuid;
 import android.support.annotation.Nullable;
 import android.support.v4.app.DialogFragment;
 import android.support.v7.app.AppCompatDialogFragment;
@@ -17,13 +16,12 @@ import java.util.UUID;
 
 import dev.qbikkx.keepsolidone.R;
 import dev.qbikkx.keepsolidone.activities.UserActivity;
+import dev.qbikkx.keepsolidone.adapters.UsersListAdapter;
 import dev.qbikkx.keepsolidone.dialogs.CancelDialog;
 import dev.qbikkx.keepsolidone.dialogs.OkDialog;
 import dev.qbikkx.keepsolidone.models.User;
 import dev.qbikkx.keepsolidone.models.UsersDataBase;
 import dev.qbikkx.keepsolidone.recycler.OnUserItemClickListener;
-import dev.qbikkx.keepsolidone.recycler.UsersListAdapter;
-import dev.qbikkx.keepsolidone.utils.Constants;
 
 /**
  * @author <a href="mailto:qbikkx@gmail.com">qbikkx</a>
@@ -31,7 +29,8 @@ import dev.qbikkx.keepsolidone.utils.Constants;
 public class UsersListFragment extends AppCompatDialogFragment {
     public final static String TAG = "UsersListFragment";
 
-    public final static String EXTRA_SELECTED_ID = "dev.qbikkx.keepsolidone.fragments.UsersListFragmet.selected_id";
+    public final static int REQUEST_SEND_BTN_ACTION = 1;
+
     private RecyclerView recyclerView;
     private UsersListAdapter adapter;
 
@@ -57,16 +56,14 @@ public class UsersListFragment extends AppCompatDialogFragment {
     }
 
     private void startSenderActivity(UUID userId) {
-        Intent intent = new Intent(getActivity(), UserActivity.class);
-        ParcelUuid parcelUuid = new ParcelUuid(userId);
-        intent.putExtra(EXTRA_SELECTED_ID, parcelUuid);
-        startActivityForResult(intent, Constants.REQUEST_SEND_BTN_ACTION);
+        Intent intent = UserActivity.newIntent(getActivity(), userId);
+        startActivityForResult(intent, REQUEST_SEND_BTN_ACTION);
     }
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (Constants.REQUEST_SEND_BTN_ACTION == requestCode) {
+        if (REQUEST_SEND_BTN_ACTION == requestCode) {
             DialogFragment dialog;
             switch (resultCode) {
                 case Activity.RESULT_OK:

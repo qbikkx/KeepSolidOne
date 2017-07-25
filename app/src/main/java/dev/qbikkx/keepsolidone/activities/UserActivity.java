@@ -1,20 +1,20 @@
 package dev.qbikkx.keepsolidone.activities;
 
+import android.content.Context;
 import android.content.Intent;
-import android.net.Uri;
 import android.os.Bundle;
 import android.os.ParcelUuid;
+import android.support.v4.view.PagerAdapter;
+import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
-import android.view.View;
-import android.widget.Button;
-import android.widget.ImageView;
-import android.widget.TextView;
+
+import java.util.List;
+import java.util.UUID;
 
 import dev.qbikkx.keepsolidone.R;
-import dev.qbikkx.keepsolidone.fragments.UsersListFragment;
+import dev.qbikkx.keepsolidone.adapters.UserPagerAdapter;
 import dev.qbikkx.keepsolidone.models.User;
 import dev.qbikkx.keepsolidone.models.UsersDataBase;
-import dev.qbikkx.keepsolidone.utils.EmailUtils;
 
 /**
  * Activity which call the external Email Sender Activity
@@ -22,98 +22,45 @@ import dev.qbikkx.keepsolidone.utils.EmailUtils;
  * @author <a href="mailto:qbikkx@gmail.com">qbikkx</a>
  */
 public class UserActivity extends AppCompatActivity {
+    public static final String EXTRA_USER_ID = "dev.qbikkx.keepsolidone.activities.UserActivity.userId";
 
-    private User mUser;
-
-    private TextView mUserNameTextView;
-    private TextView mEmailTextView;
-    private ImageView mIsOnlineImageView;
-    private ImageView mCategoryImageView;
-    private TextView mCategoryTextView;
-
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        overridePendingTransition(R.anim.enter_from_right, R.anim.exit_to_left);
-        setContentView(R.layout.activity_user);
-        initUserFromIntent();
-        if (isUserValid()) {
-            initUI();
-            updateUI();
-        }
-    }
-
-    private void initUserFromIntent() {
-        Intent intent = getIntent();
-        if (intent != null) {
-            ParcelUuid parcelUuid = intent.getParcelableExtra(UsersListFragment.EXTRA_SELECTED_ID);
-            if (parcelUuid != null) {
-                mUser = UsersDataBase.getInstance().getUser(parcelUuid.getUuid());
-            }
-        }
-    }
-
-    private boolean isUserValid() {
-        return mUser != null;
-    }
-
-    private void initUI() {
-        mUserNameTextView = (TextView) findViewById(R.id.tv_sender_user_name);
-        mEmailTextView = (TextView) findViewById(R.id.tv_sender_email);
-        mIsOnlineImageView = (ImageView) findViewById(R.id.iv_sender_is_online);
-        mCategoryImageView = (ImageView) findViewById(R.id.iv_sender_category);
-        mCategoryTextView = (TextView) findViewById(R.id.tv_sender_category);
-
-        Button confirmBtn = (Button) findViewById(R.id.btn_confirm);
-        confirmBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                sendEmail();
-            }
-        });
-
-        Button cancelBtn = (Button) findViewById(R.id.btn_cancel);
-        cancelBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                finishWithResult(RESULT_CANCELED);
-            }
-        });
-    }
-
-    private void updateUI() {
-        mUserNameTextView.setText(mUser.getUserName());
-        mEmailTextView.setText(mUser.getUserAddress());
-        if (mUser.isOnline()) {
-            mIsOnlineImageView.setImageDrawable(getDrawable(R.drawable.online));
-        } else {
-            mIsOnlineImageView.setImageDrawable(getDrawable(R.drawable.offline));
-        }
-        User.Category category = mUser.getCategory();
-        mCategoryImageView.setImageDrawable(getDrawable(category.getDrawableResourceId()));
-        mCategoryTextView.setText(category.getStringResourceId());
-    }
-
-
-    private void sendEmail() {
-        CharSequence email = mEmailTextView.getText();
-        if (email != null && EmailUtils.isValidEmail(email)) {
-            Intent sendIntent = new Intent(Intent.ACTION_SENDTO, Uri.fromParts("mailto", email.toString(), null));
-            sendIntent.putExtra(Intent.EXTRA_SUBJECT, getResources().getString(R.string.mail_subject));
-            sendIntent.putExtra(Intent.EXTRA_TEXT, getResources().getString(R.string.mail_body));
-            startActivity(Intent.createChooser(sendIntent, getResources().getString(R.string.send_email_msg)));
-            finishWithResult(RESULT_OK);
-        }
-    }
-
-    private void finishWithResult(int resultCode) {
-        setResult(resultCode);
-        finish();
-    }
+    private ViewPager mPager;
+    private PagerAdapter mAdapter;
+    private List<User> mUsersList;
 
     /**
-     * finish with custom animation
+     * Четко определяем интент который может стартовать эту активити
+     * @param ctx - запускающая компонента
+     * @param userId - id отображаемого пользователя
      */
+    public static Intent newIntent(Context ctx, UUID userId) {
+        Intent intent = new Intent(ctx, UserActivity.class);
+        intent.putExtra(EXTRA_USER_ID, new ParcelUuid(userId));
+        return intent;
+    }
+
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_user);
+
+        mPager = (ViewPager) findViewById(R.id.vp_user_pager);
+        mUsersList = UsersDataBase.getInstance().getUsersList();
+        mAdapter = new UserPagerAdapter(getSupportFragmentManager(), mUsersList);
+        mPager.setAdapter(mAdapter);
+
+        Intent intent = getIntent();
+        if (intent != null) {
+            UUID userId = ((ParcelUuid) getIntent().getParcelableExtra(EXTRA_USER_ID)).getUuid();
+            for (int i = 0; i < mUsersList.size(); i++) {
+                if (mUsersList.get(i).getId().equals(userId)) {
+                    mPager.setCurrentItem(i);
+                    break;
+                }
+            }
+        }
+    }
+
     @Override
     public void finish() {
         super.finish();
