@@ -7,7 +7,7 @@ import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 
 import dev.qbikkx.keepsolidone.R;
-import dev.qbikkx.keepsolidone.fragments.UsersListFragment;
+import dev.qbikkx.keepsolidone.fragments.NewsListFragment;
 
 /**
  * MainActivity.
@@ -29,7 +29,7 @@ public class MainActivity extends AppCompatActivity {
         Fragment fragment = fragmentManager.findFragmentById(R.id.fl_fragment_container);
         if (fragment == null) {
             FragmentTransaction transaction = fragmentManager.beginTransaction();
-            fragment = UsersListFragment.newInstance();
+            fragment = NewsListFragment.newInstance();
             transaction.setCustomAnimations(R.anim.enter_from_left, R.anim.exit_to_right);
             transaction.add(R.id.fl_fragment_container, fragment);
             transaction.commit();

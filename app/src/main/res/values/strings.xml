@@ -1,31 +1,15 @@
 <resources>
-    <string name="app_name">KeepSolidOne</string>
+    <string name="app_name">IndiaLive</string>
 
-    <string name="main_activity_label">HomeWork#5 Hard level</string>
-    <string name="user_activity_label">User</string>
+    <string name="main_activity_label">Indian Live</string>
+    <string name="user_activity_label">News Details</string>
 
-    <string name="btn_send">Send</string>
-    <string name="btn_clear">Clear</string>
-    <string name="btn_confirm">Confirm</string>
-    <string name="btn_cancel">Cancel</string>
-
-    <string name="et_input_hint">enter email address</string>
-
-    <string name="text_confirmed">Email sent</string>
-    <string name="text_canceled">Send Email canceled</string>
-
-    <string name="sw_is_send_enabled">Send enabled</string>
-    <string name="incorrect_email_msg">Incorrect Email</string>
-    <string name="mail_subject">Epic email subject</string>
-    <string name="mail_body">Hello from qbikkx</string>
-    <string name="send_email_msg">Sending email</string>
-    <string name="img_ok">OK</string>
-    <string name="img_cancel">Cancel</string>
-    <string name="iv_user_caterogy">user category</string>
-    <string name="iv_is_online">online status</string>
-
-    <string name="category_friend">Friends</string>
-    <string name="category_family">Family</string>
-    <string name="category_work">Work</string>
-    <string name="category_other">Other</string>
+    <string name="share_chooser">Share news via…</string>
+    <!-- Menu section -->
+    <string name="menu_refresh">refresh</string>
+    <string name="menu_share">share</string>
+    <!-- Error section -->
+    <string name="request_on_failure">Error: Request failed. Check your network connection</string>
+    <string name="null_responce">Error: Null response</string>
+    <string name="bad_responce">Error: bad response status</string>
 </resources>
