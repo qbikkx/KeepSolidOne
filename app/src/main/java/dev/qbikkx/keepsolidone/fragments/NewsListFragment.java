@@ -134,4 +134,12 @@ public class NewsListFragment extends AppCompatDialogFragment {
             }
         });
     }
+
+    @Override
+    public void onDestroy() {
+        if (mAdapter.getCursor() != null) {
+            mAdapter.getCursor().close();
+        }
+        super.onDestroy();
+    }
 }
