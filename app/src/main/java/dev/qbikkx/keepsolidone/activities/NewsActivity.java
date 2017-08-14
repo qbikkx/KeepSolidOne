@@ -67,6 +67,14 @@ public class NewsActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
+    @Override
+    protected void onDestroy() {
+        if (mAdapter.getCursor() != null) {
+            mAdapter.getCursor().close();
+        }
+        super.onDestroy();
+    }
+
     /**
      * finish with animation
      */

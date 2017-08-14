@@ -2,6 +2,7 @@ package dev.qbikkx.keepsolidone.fragments;
 
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -12,9 +13,11 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.Window;
+import android.webkit.WebChromeClient;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
+import android.widget.FrameLayout;
+import android.widget.ProgressBar;
 
 import dev.qbikkx.keepsolidone.R;
 
@@ -23,6 +26,8 @@ import dev.qbikkx.keepsolidone.R;
  */
 public class NewsFragment extends Fragment {
     private final static String URI_ARG = "uri_arg";
+
+    private FrameLayout mProgressLine;
 
     public static NewsFragment newInstance(Uri url) {
         Bundle bundle = new Bundle();
@@ -42,10 +47,24 @@ public class NewsFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_news, container, false);
+        mProgressLine = (FrameLayout) rootView.findViewById(R.id.fl_progress);
+
         WebView webView = (WebView) rootView.findViewById(R.id.wv_news);
         webView.getSettings().setJavaScriptEnabled(true);
+        webView.setWebChromeClient(new WebChromeClient());
+        webView.setWebViewClient(new WebViewClient() {
+            @Override public void onPageStarted(WebView view, String url, Bitmap favicon) {
+                super.onPageStarted(view, url, favicon);
+                mProgressLine.setVisibility(ProgressBar.VISIBLE);
+            }
+
+            @Override
+            public void onPageFinished(WebView view, String url) {
+                super.onPageFinished(view, url);
+                mProgressLine.setVisibility(ProgressBar.GONE);
+            }
+        });
         webView.loadUrl(String.valueOf(getArguments().getParcelable(URI_ARG)));
-        webView.setWebViewClient(new WebViewClient());
         return rootView;
     }
 
