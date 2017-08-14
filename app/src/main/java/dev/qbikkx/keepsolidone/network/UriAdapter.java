@@ -12,6 +12,9 @@ import com.google.gson.JsonSerializer;
 
 import java.lang.reflect.Type;
 
+/**
+ * @author <a href="mailto:qbikkx@gmail.com">qbikkx</a>
+ */
 public class UriAdapter implements JsonSerializer<Uri>, JsonDeserializer<Uri> {
 
     @Override

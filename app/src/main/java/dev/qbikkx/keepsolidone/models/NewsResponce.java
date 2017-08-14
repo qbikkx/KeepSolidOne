@@ -5,6 +5,9 @@ import com.google.gson.annotations.SerializedName;
 
 import java.util.List;
 
+/**
+ * @author <a href="mailto:qbikkx@gmail.com">qbikkx</a>
+ */
 public class NewsResponce {
     @SerializedName("status")
     @Expose

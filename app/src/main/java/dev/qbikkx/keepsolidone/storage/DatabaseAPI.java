@@ -1,6 +1,8 @@
 package dev.qbikkx.keepsolidone.storage;
 
-
+/**
+ * @author <a href="mailto:qbikkx@gmail.com">qbikkx</a>
+ */
 import android.database.Cursor;
 
 import java.util.List;

@@ -5,12 +5,8 @@ import android.database.Cursor;
 import android.net.Uri;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentStatePagerAdapter;
-
-import java.util.List;
 
 import dev.qbikkx.keepsolidone.fragments.NewsFragment;
-import dev.qbikkx.keepsolidone.models.News;
 import dev.qbikkx.keepsolidone.storage.database.NewsDbSchema;
 
 /**

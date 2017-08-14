@@ -6,8 +6,11 @@ import android.database.sqlite.SQLiteOpenHelper;
 
 import dev.qbikkx.keepsolidone.storage.database.NewsDbSchema.NewsTable;
 
+/**
+ * @author <a href="mailto:qbikkx@gmail.com">qbikkx</a>
+ */
 public class NewsSQLiteOpenHelper extends SQLiteOpenHelper {
-    private static final int VERSION = 1;
+    private static final int VERSION = 2;
     private static final String DATABASE_NAME = "newsDataBase.db";
 
     public NewsSQLiteOpenHelper(Context context) {
@@ -16,24 +19,26 @@ public class NewsSQLiteOpenHelper extends SQLiteOpenHelper {
 
     @Override
     public void onCreate(SQLiteDatabase db) {
-        StringBuilder stringBuilder = new StringBuilder();
-        stringBuilder.append("create table ");
-        stringBuilder.append(NewsTable.NAME);
-        stringBuilder.append("( _id integer primary key autoincrement, ");
-        stringBuilder.append(NewsTable.Cols.AUTHOR);
-        stringBuilder.append(", ");
-        stringBuilder.append(NewsTable.Cols.TITLE);
-        stringBuilder.append(", ");
-        stringBuilder.append(NewsTable.Cols.DESC);
-        stringBuilder.append(", ");
-        stringBuilder.append(NewsTable.Cols.URL);
-        stringBuilder.append(" text not null unique, ");
-        stringBuilder.append(NewsTable.Cols.URL_TO_IMAGE);
-        stringBuilder.append(", ");
-        stringBuilder.append(NewsTable.Cols.PUBLISHED_AT);
-        stringBuilder.append(")");
-        String sql = stringBuilder.toString();
+        String sql = "create table " +
+                NewsTable.NAME +
+                "( " + NewsTable.Cols._ID + " integer primary key autoincrement, " +
+                NewsTable.Cols.AUTHOR + ", " +
+                NewsTable.Cols.TITLE + ", " +
+                NewsTable.Cols.DESC + ", " +
+                NewsTable.Cols.URL + " text not null unique, " +
+                NewsTable.Cols.URL_TO_IMAGE + ", " +
+                NewsTable.Cols.PUBLISHED_AT + " integer )";
         db.execSQL(sql);
+
+        db.execSQL("CREATE TRIGGER insert_news_trigger AFTER INSERT ON " + NewsTable.NAME +
+                " WHEN (SELECT count(*) FROM " + NewsTable.NAME + ") > " + NewsTable.MAX_CAPACITY +
+                " BEGIN " +
+                    " delete from " + NewsTable.NAME +
+                    " where " + NewsTable.Cols.PUBLISHED_AT +
+                            " = (select min(" + NewsTable.Cols.PUBLISHED_AT +
+                                ") from " + NewsTable.NAME + ");" +
+                " END;"
+            );
     }
 
     @Override

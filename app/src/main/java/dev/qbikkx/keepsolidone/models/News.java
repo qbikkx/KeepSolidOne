@@ -9,6 +9,8 @@ import java.util.Date;
 
 /**
  * Уникальный ключ - URL новости
+ *
+ * @author <a href="mailto:qbikkx@gmail.com">qbikkx</a>
  */
 public class News {
     @SerializedName("author")

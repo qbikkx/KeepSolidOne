@@ -14,20 +14,14 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 
-import java.util.HashMap;
-import java.util.Map;
-
 import dev.qbikkx.keepsolidone.NewsApplication;
 import dev.qbikkx.keepsolidone.R;
 import dev.qbikkx.keepsolidone.activities.NewsActivity;
-import dev.qbikkx.keepsolidone.models.News;
+import dev.qbikkx.keepsolidone.adapters.NewsListAdapter;
+import dev.qbikkx.keepsolidone.listeners.OnNewsItemClickListener;
 import dev.qbikkx.keepsolidone.models.NewsResponce;
-import dev.qbikkx.keepsolidone.recycler.NewsListAdapter;
-import dev.qbikkx.keepsolidone.recycler.OnNewsItemClickListener;
-import dev.qbikkx.keepsolidone.network.NewsAPI;
-import dev.qbikkx.keepsolidone.storage.database.NewsDbSchema;
 import dev.qbikkx.keepsolidone.storage.database.NewsDbSchema.NewsTable;
-import dev.qbikkx.keepsolidone.utils.Utils;
+import dev.qbikkx.keepsolidone.utils.ToastUtils;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -42,7 +36,7 @@ public class NewsListFragment extends AppCompatDialogFragment {
      * Optimize query
      * TODO: Плохая гибкость, куча зависимостей
      */
-    private String[] COLUMNS = {"_id", NewsTable.Cols.TITLE,
+    private String[] COLUMNS = {NewsTable.Cols._ID, NewsTable.Cols.TITLE,
             NewsTable.Cols.PUBLISHED_AT, NewsTable.Cols.URL_TO_IMAGE, NewsTable.Cols.URL};
 
     private RecyclerView mRecyclerView;
@@ -79,11 +73,20 @@ public class NewsListFragment extends AppCompatDialogFragment {
         mSwipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
-                loadNewsFromWeb();
+                loadLatestNewsFromWeb();
             }
         });
-        loadNewsFromWeb();
+
         return rootView;
+    }
+
+    /**
+     * Обновляем список каждый раз при появлении фрагмента на экране
+     */
+    @Override
+    public void onResume() {
+        super.onResume();
+        loadLatestNewsFromWeb();
     }
 
     @Override
@@ -98,19 +101,15 @@ public class NewsListFragment extends AppCompatDialogFragment {
                 if (!mSwipeRefreshLayout.isRefreshing()) {
                     mSwipeRefreshLayout.setRefreshing(true);
                 }
-                loadNewsFromWeb();
+                loadLatestNewsFromWeb();
                 return true;
         }
         return super.onOptionsItemSelected(item);
     }
 
 
-    private void loadNewsFromWeb() {
-        Map<String, String> data = new HashMap<>();
-        data.put("source", NewsAPI.SOURCE);
-        data.put("sortBy", "latest");
-        data.put("apiKey", NewsAPI.API_KEY);
-        NewsApplication.getWebAPI().getNews(data).enqueue(new Callback<NewsResponce>() {
+    private void loadLatestNewsFromWeb() {
+        NewsApplication.getWebAPI().getNews("latest").enqueue(new Callback<NewsResponce>() {
             @Override
             public void onResponse(Call<NewsResponce> call, Response<NewsResponce> response) {
                 NewsResponce newsResponce = response.body();
@@ -119,10 +118,10 @@ public class NewsListFragment extends AppCompatDialogFragment {
                         NewsApplication.getDatabaseAPI().addNewsMany(newsResponce.getArticles());
                         mAdapter.swapCursor(NewsApplication.getDatabaseAPI().queryNews(COLUMNS, null, null));
                     } else {
-                        Utils.showToast(getActivity(), R.string.bad_responce);
+                        ToastUtils.showToast(getActivity(), R.string.bad_responce);
                     }
                 } else {
-                    Utils.showToast(getActivity(), R.string.null_responce);
+                    ToastUtils.showToast(getActivity(), R.string.null_responce);
                 }
                 mSwipeRefreshLayout.setRefreshing(false);
             }
@@ -130,7 +129,7 @@ public class NewsListFragment extends AppCompatDialogFragment {
             @Override
             public void onFailure(Call<NewsResponce> call, Throwable t) {
                 mSwipeRefreshLayout.setRefreshing(false);
-                Utils.showToast(getActivity(), R.string.request_on_failure);
+                ToastUtils.showToast(getActivity(), R.string.request_on_failure);
                 t.printStackTrace();
             }
         });

@@ -1,4 +1,4 @@
-package dev.qbikkx.keepsolidone.recycler;
+package dev.qbikkx.keepsolidone.holders;
 
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -12,6 +12,7 @@ import com.squareup.picasso.Picasso;
 import java.util.Date;
 
 import dev.qbikkx.keepsolidone.R;
+import dev.qbikkx.keepsolidone.listeners.OnNewsItemClickListener;
 import dev.qbikkx.keepsolidone.models.News;
 
 /**

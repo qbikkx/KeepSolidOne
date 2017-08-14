@@ -13,7 +13,9 @@ import dev.qbikkx.keepsolidone.models.News;
 import dev.qbikkx.keepsolidone.storage.DatabaseAPI;
 import dev.qbikkx.keepsolidone.storage.database.NewsDbSchema.NewsTable;
 
-
+/**
+ * @author <a href="mailto:qbikkx@gmail.com">qbikkx</a>
+ */
 public class NewsStorage implements DatabaseAPI {
     private static NewsStorage instance;
 

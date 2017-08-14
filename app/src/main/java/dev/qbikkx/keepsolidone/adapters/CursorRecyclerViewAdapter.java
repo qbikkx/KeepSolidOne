@@ -1,4 +1,4 @@
-package dev.qbikkx.keepsolidone.recycler;
+package dev.qbikkx.keepsolidone.adapters;
 /*
  * Copyright (C) 2014 skyfish.jy@gmail.com
  *
@@ -16,7 +16,6 @@ package dev.qbikkx.keepsolidone.recycler;
  *
  */
 
-import android.content.Context;
 import android.database.Cursor;
 import android.database.DataSetObserver;
 import android.support.v7.widget.RecyclerView;

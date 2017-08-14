@@ -5,26 +5,16 @@ import android.content.Intent;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentTransaction;
-import android.support.v4.app.NavUtils;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.view.MenuItem;
 
-import java.util.List;
-
 import dev.qbikkx.keepsolidone.NewsApplication;
 import dev.qbikkx.keepsolidone.R;
 import dev.qbikkx.keepsolidone.adapters.NewsPagerAdapter;
-import dev.qbikkx.keepsolidone.fragments.NewsFragment;
-import dev.qbikkx.keepsolidone.models.News;
 import dev.qbikkx.keepsolidone.storage.database.NewsDbSchema.NewsTable;
 
 /**
- * Activity which call the external Email Sender Activity
- *
  * @author <a href="mailto:qbikkx@gmail.com">qbikkx</a>
  */
 public class NewsActivity extends AppCompatActivity {
@@ -44,8 +34,9 @@ public class NewsActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_news);
         mPager = (ViewPager) findViewById(R.id.vp_news_pager);
+        //optimize database request. load only 2 cols
         mAdapter = new NewsPagerAdapter(this, getSupportFragmentManager(),
-                NewsApplication.getDatabaseAPI().queryNews(new String[]{NewsTable.Cols.URL, "_id"},
+                NewsApplication.getDatabaseAPI().queryNews(new String[]{NewsTable.Cols.URL, NewsTable.Cols._ID},
                         null, null));
         mPager.setAdapter(mAdapter);
         Intent intent = getIntent();
@@ -63,6 +54,9 @@ public class NewsActivity extends AppCompatActivity {
         }
     }
 
+    /**
+     * Пусть кнопка назад на экшн баре ведет себя как Back
+     */
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
@@ -73,6 +67,9 @@ public class NewsActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
+    /**
+     * finish with animation
+     */
     @Override
     public void finish() {
         super.finish();

@@ -1,4 +1,4 @@
-package dev.qbikkx.keepsolidone.recycler;
+package dev.qbikkx.keepsolidone.adapters;
 
 import android.database.Cursor;
 import android.net.Uri;
@@ -7,20 +7,19 @@ import android.view.ViewGroup;
 
 import java.util.Date;
 
+import dev.qbikkx.keepsolidone.holders.NewsHolder;
+import dev.qbikkx.keepsolidone.listeners.OnNewsItemClickListener;
 import dev.qbikkx.keepsolidone.models.News;
 import dev.qbikkx.keepsolidone.storage.database.NewsDbSchema.NewsTable;
 
 /**
  * @author <a href="mailto:qbikkx@gmail.com">qbikkx</a>
  */
-
 public class NewsListAdapter extends CursorRecyclerViewAdapter<NewsHolder> {
-    private Cursor mCursor;
     private OnNewsItemClickListener mOnNewsItemClickListener;
 
     public NewsListAdapter(Cursor cursor, OnNewsItemClickListener listener) {
         super(cursor);
-        mCursor = cursor;
         mOnNewsItemClickListener = listener;
     }
 
@@ -32,11 +31,7 @@ public class NewsListAdapter extends CursorRecyclerViewAdapter<NewsHolder> {
 
     @Override
     public void onBindViewHolder(NewsHolder holder, Cursor cursor) {
-        //todo optimize
-        News news = new News(Uri.parse(cursor.getString(cursor.getColumnIndex(NewsTable.Cols.URL))));
-        news.setTitle(cursor.getString(cursor.getColumnIndex(NewsTable.Cols.TITLE)));
-        news.setPublishedAt(new Date(cursor.getLong(cursor.getColumnIndex(NewsTable.Cols.PUBLISHED_AT))));
-        news.setUrlToImage(Uri.parse(cursor.getString(cursor.getColumnIndex(NewsTable.Cols.URL_TO_IMAGE))));
+        News news = getNews(cursor);
         holder.bind(news);
     }
 
@@ -45,17 +40,20 @@ public class NewsListAdapter extends CursorRecyclerViewAdapter<NewsHolder> {
     }
 
     private News getNews(int positon) {
-        if (mCursor.moveToPosition(positon)) {
-            return getNews();
+        if (getCursor().moveToPosition(positon)) {
+            return getNews(getCursor());
         }
         return null;
     }
 
-    private News getNews() {
-        String title = mCursor.getString(mCursor.getColumnIndex(NewsTable.Cols.TITLE));
-        Uri url = Uri.parse(mCursor.getString(mCursor.getColumnIndex(NewsTable.Cols.URL)));
-        Uri urlToImage = Uri.parse(mCursor.getString(mCursor.getColumnIndex(NewsTable.Cols.URL_TO_IMAGE)));
-        long date = mCursor.getLong(mCursor.getColumnIndex(NewsTable.Cols.PUBLISHED_AT));
+    /**
+     * Отбираем только необходимые столбцы
+     */
+    private News getNews(Cursor cursor) {
+        String title = cursor.getString(cursor.getColumnIndex(NewsTable.Cols.TITLE));
+        Uri url = Uri.parse(cursor.getString(cursor.getColumnIndex(NewsTable.Cols.URL)));
+        Uri urlToImage = Uri.parse(cursor.getString(cursor.getColumnIndex(NewsTable.Cols.URL_TO_IMAGE)));
+        long date = cursor.getLong(cursor.getColumnIndex(NewsTable.Cols.PUBLISHED_AT));
         News news = new News(url);
         news.setTitle(title);
         news.setUrlToImage(urlToImage);

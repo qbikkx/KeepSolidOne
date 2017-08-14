@@ -12,6 +12,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 
@@ -42,6 +43,7 @@ public class NewsFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_news, container, false);
         WebView webView = (WebView) rootView.findViewById(R.id.wv_news);
+        webView.getSettings().setJavaScriptEnabled(true);
         webView.loadUrl(String.valueOf(getArguments().getParcelable(URI_ARG)));
         webView.setWebViewClient(new WebViewClient());
         return rootView;

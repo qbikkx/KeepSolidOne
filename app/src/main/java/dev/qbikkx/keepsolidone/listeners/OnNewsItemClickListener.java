@@ -1,4 +1,4 @@
-package dev.qbikkx.keepsolidone.recycler;
+package dev.qbikkx.keepsolidone.listeners;
 
 import android.view.View;
 

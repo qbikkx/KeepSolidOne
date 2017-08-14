@@ -13,6 +13,9 @@ import dev.qbikkx.keepsolidone.storage.database.NewsStorage;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
+/**
+ * @author <a href="mailto:qbikkx@gmail.com">qbikkx</a>
+ */
 public class NewsApplication extends Application {
 
     private static NewsAPI sNewsAPI;
