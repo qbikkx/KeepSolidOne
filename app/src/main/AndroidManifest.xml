@@ -2,11 +2,12 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="dev.qbikkx.keepsolidone">
 
+    <uses-permission android:name="android.permission.INTERNET" />
     <application
+        android:name=".NewsApplication"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
-        android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity
@@ -19,8 +20,9 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".activities.SenderActivity"
-            android:label="@string/receiver_activity_label" />
+            android:name=".activities.NewsActivity"
+            android:parentActivityName=".activities.MainActivity"
+            android:label="@string/user_activity_label" />
     </application>
 
 </manifest>
