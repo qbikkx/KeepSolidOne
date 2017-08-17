@@ -1,6 +1,7 @@
-package dev.qbikkx.keepsolidone.fragments;
+package mvp.newslist;
 
 import android.content.Intent;
+import android.database.Cursor;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.widget.SwipeRefreshLayout;
@@ -29,15 +30,9 @@ import retrofit2.Response;
 /**
  * @author <a href="mailto:qbikkx@gmail.com">qbikkx</a>
  */
-public class NewsListFragment extends AppCompatDialogFragment {
-    public final static String TAG = "NewsListFragment";
+public class NewsListFragment extends AppCompatDialogFragment implements NewsListContract.NewsListView {
 
-    /**
-     * Optimize query
-     * TODO: Плохая гибкость, куча зависимостей
-     */
-    private String[] COLUMNS = {NewsTable.Cols._ID, NewsTable.Cols.TITLE,
-            NewsTable.Cols.PUBLISHED_AT, NewsTable.Cols.URL_TO_IMAGE, NewsTable.Cols.URL};
+    NewsListContract.NewsListPresenter mPresenter;
 
     private RecyclerView mRecyclerView;
     private NewsListAdapter mAdapter;
@@ -59,25 +54,43 @@ public class NewsListFragment extends AppCompatDialogFragment {
         View rootView = inflater.inflate(R.layout.news_list_fragment, container, false);
         mRecyclerView = (RecyclerView) rootView.findViewById(R.id.rv_news);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
-        mAdapter = new NewsListAdapter(NewsApplication.getDatabaseAPI().queryNews(COLUMNS, null, null),
+        mAdapter = new NewsListAdapter(mPresenter.loadNewsFromStorage(),
                 new OnNewsItemClickListener() {
-            @Override
-            public void onClick(View v, int position) {
-                Intent intent = NewsActivity.newIntent(getActivity(),
-                        mAdapter.getItem(position).getUrl());
-                startActivity(intent);
-            }
-        });
+                    @Override
+                    public void onClick(View v, int position) {
+                        Intent intent = NewsActivity.newIntent(getActivity(), mAdapter.getItem(position).getUrl());
+                        startActivity(intent);
+                    }
+                });
         mRecyclerView.setAdapter(mAdapter);
         mSwipeRefreshLayout = (SwipeRefreshLayout) rootView.findViewById(R.id.srl_swipe_refresh);
         mSwipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
-                loadLatestNewsFromWeb();
+                mPresenter.loadLatestNewsFromWeb();
             }
         });
-
         return rootView;
+    }
+
+    @Override
+    public void setPresenter(NewsListContract.NewsListPresenter presenter) {
+        mPresenter = presenter;
+    }
+
+    @Override
+    public void setRefreshing(boolean isRefreshing) {
+        mSwipeRefreshLayout.setRefreshing(isRefreshing);
+    }
+
+    @Override
+    public void swapCursor(Cursor cursor) {
+        mAdapter.swapCursor(cursor);
+    }
+
+    @Override
+    public void showToast(int stringId) {
+        ToastUtils.showToast(getActivity(), R.string.request_on_failure);
     }
 
     /**
@@ -86,7 +99,7 @@ public class NewsListFragment extends AppCompatDialogFragment {
     @Override
     public void onResume() {
         super.onResume();
-        loadLatestNewsFromWeb();
+        mPresenter.loadLatestNewsFromWeb();
     }
 
     @Override
@@ -101,45 +114,15 @@ public class NewsListFragment extends AppCompatDialogFragment {
                 if (!mSwipeRefreshLayout.isRefreshing()) {
                     mSwipeRefreshLayout.setRefreshing(true);
                 }
-                loadLatestNewsFromWeb();
+                mPresenter.loadLatestNewsFromWeb();
                 return true;
         }
         return super.onOptionsItemSelected(item);
     }
 
-
-    private void loadLatestNewsFromWeb() {
-        NewsApplication.getWebAPI().getNews("latest").enqueue(new Callback<NewsResponce>() {
-            @Override
-            public void onResponse(Call<NewsResponce> call, Response<NewsResponce> response) {
-                NewsResponce newsResponce = response.body();
-                if (newsResponce != null) {
-                    if (newsResponce.getStatus().equals("ok")) {
-                        NewsApplication.getDatabaseAPI().addNewsMany(newsResponce.getArticles());
-                        mAdapter.swapCursor(NewsApplication.getDatabaseAPI().queryNews(COLUMNS, null, null));
-                    } else {
-                        ToastUtils.showToast(getActivity(), R.string.bad_responce);
-                    }
-                } else {
-                    ToastUtils.showToast(getActivity(), R.string.null_responce);
-                }
-                mSwipeRefreshLayout.setRefreshing(false);
-            }
-
-            @Override
-            public void onFailure(Call<NewsResponce> call, Throwable t) {
-                mSwipeRefreshLayout.setRefreshing(false);
-                ToastUtils.showToast(getActivity(), R.string.request_on_failure);
-                t.printStackTrace();
-            }
-        });
-    }
-
     @Override
     public void onDestroy() {
-        if (mAdapter.getCursor() != null) {
-            mAdapter.getCursor().close();
-        }
+        mAdapter.getCursor().close();
         super.onDestroy();
     }
 }

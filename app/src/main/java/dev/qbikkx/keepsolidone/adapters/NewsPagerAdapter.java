@@ -6,7 +6,7 @@ import android.net.Uri;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 
-import dev.qbikkx.keepsolidone.fragments.NewsFragment;
+import mvp.newsdetails.NewsFragment;
 import dev.qbikkx.keepsolidone.storage.database.NewsDbSchema;
 
 /**
