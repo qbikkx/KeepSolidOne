@@ -33,6 +33,7 @@ public class NewsActivity extends AppCompatActivity {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_news);
+        overridePendingTransition(R.anim.enter_from_right, R.anim.exit_to_left);
         mPager = (ViewPager) findViewById(R.id.vp_news_pager);
         //optimize database request. load only 2 cols
         mAdapter = new NewsPagerAdapter(this, getSupportFragmentManager(),
