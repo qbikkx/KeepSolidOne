@@ -1,4 +1,4 @@
-package dev.qbikkx.keepsolidone.adapters;
+package dev.qbikkx.keepsolidone.detailscreen.adapters;
 
 import android.content.Context;
 import android.database.Cursor;
@@ -6,7 +6,7 @@ import android.net.Uri;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 
-import mvp.newsdetails.NewsFragment;
+import dev.qbikkx.keepsolidone.detailscreen.NewsFragment;
 import dev.qbikkx.keepsolidone.storage.database.NewsDbSchema;
 
 /**

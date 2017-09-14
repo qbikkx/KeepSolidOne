@@ -1,4 +1,4 @@
-package dev.qbikkx.keepsolidone.adapters;
+package dev.qbikkx.keepsolidone.detailscreen.adapters;
 
 import android.content.Context;
 import android.database.Cursor;

@@ -1,4 +1,4 @@
-package dev.qbikkx.keepsolidone.adapters;
+package dev.qbikkx.keepsolidone.mainscreen.recycler;
 
 import android.database.Cursor;
 import android.net.Uri;
@@ -7,8 +7,6 @@ import android.view.ViewGroup;
 
 import java.util.Date;
 
-import dev.qbikkx.keepsolidone.holders.NewsHolder;
-import dev.qbikkx.keepsolidone.listeners.OnNewsItemClickListener;
 import dev.qbikkx.keepsolidone.models.News;
 import dev.qbikkx.keepsolidone.storage.database.NewsDbSchema.NewsTable;
 

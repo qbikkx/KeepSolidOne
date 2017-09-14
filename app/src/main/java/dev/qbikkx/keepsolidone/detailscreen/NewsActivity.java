@@ -1,4 +1,4 @@
-package dev.qbikkx.keepsolidone.activities;
+package dev.qbikkx.keepsolidone.detailscreen;
 
 import android.content.Context;
 import android.content.Intent;
@@ -11,14 +11,14 @@ import android.view.MenuItem;
 
 import dev.qbikkx.keepsolidone.NewsApplication;
 import dev.qbikkx.keepsolidone.R;
-import dev.qbikkx.keepsolidone.adapters.NewsPagerAdapter;
+import dev.qbikkx.keepsolidone.detailscreen.adapters.NewsPagerAdapter;
 import dev.qbikkx.keepsolidone.storage.database.NewsDbSchema.NewsTable;
 
 /**
  * @author <a href="mailto:qbikkx@gmail.com">qbikkx</a>
  */
 public class NewsActivity extends AppCompatActivity {
-    public static final String EXTRA_NEWS_URL = "dev.qbikkx.keepsolidone.activities.NewsActivity.url";
+    public static final String EXTRA_NEWS_URL = "dev.qbikkx.keepsolidone.detailscreen.NewsActivity.url";
 
     private ViewPager mPager;
     private NewsPagerAdapter mAdapter;

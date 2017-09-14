@@ -1,14 +1,15 @@
-package mvp.newslist;
+package dev.qbikkx.keepsolidone.mainscreen;
 
 import android.database.Cursor;
-import android.view.View;
+import android.os.Bundle;
+import android.support.v4.app.LoaderManager;
+import android.support.v4.content.CursorLoader;
+import android.support.v4.content.Loader;
 
 import dev.qbikkx.keepsolidone.NewsApplication;
 import dev.qbikkx.keepsolidone.R;
 import dev.qbikkx.keepsolidone.models.NewsResponce;
-import dev.qbikkx.keepsolidone.storage.database.NewsDbSchema;
 import dev.qbikkx.keepsolidone.storage.database.NewsDbSchema.NewsTable;
-import dev.qbikkx.keepsolidone.utils.ToastUtils;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -18,13 +19,6 @@ import retrofit2.Response;
  */
 public class NewsListPresenterImpl implements NewsListContract.NewsListPresenter {
     private NewsListContract.NewsListView mView;
-
-    /**
-     * Optimize query
-     * TODO: Плохая гибкость, куча зависимостей
-     */
-    private String[] COLUMNS = {NewsTable.Cols._ID, NewsTable.Cols.TITLE,
-            NewsTable.Cols.PUBLISHED_AT, NewsTable.Cols.URL_TO_IMAGE, NewsTable.Cols.URL};
 
     public NewsListPresenterImpl(NewsListContract.NewsListView view) {
         mView = view;
@@ -41,7 +35,6 @@ public class NewsListPresenterImpl implements NewsListContract.NewsListPresenter
                 if (newsResponce != null) {
                     if (newsResponce.getStatus().equals("ok")) {
                         NewsApplication.getDatabaseAPI().addNewsMany(newsResponce.getArticles());
-                        mView.swapCursor(loadNewsFromStorage());
                     } else {
                         mView.showToast(R.string.bad_responce);
                     }
@@ -57,10 +50,5 @@ public class NewsListPresenterImpl implements NewsListContract.NewsListPresenter
                 t.printStackTrace();
             }
         });
-    }
-
-    @Override
-    public Cursor loadNewsFromStorage() {
-        return NewsApplication.getDatabaseAPI().queryNews(COLUMNS, null, null);
     }
 }

@@ -1,15 +1,11 @@
-package dev.qbikkx.keepsolidone.activities;
+package dev.qbikkx.keepsolidone.mainscreen;
 
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 
 import dev.qbikkx.keepsolidone.R;
-import mvp.newslist.NewsListContract;
-import mvp.newslist.NewsListFragment;
-import mvp.newslist.NewsListPresenterImpl;
 
 /**
  * MainActivity.

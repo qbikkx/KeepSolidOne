@@ -11,7 +11,7 @@ import dev.qbikkx.keepsolidone.storage.database.NewsDbSchema.NewsTable;
  */
 public class NewsSQLiteOpenHelper extends SQLiteOpenHelper {
     private static final int VERSION = 2;
-    private static final String DATABASE_NAME = "newsDataBase.db";
+    static final String DATABASE_NAME = "newsDataBase.db";
 
     public NewsSQLiteOpenHelper(Context context) {
         super(context, DATABASE_NAME, null, VERSION);

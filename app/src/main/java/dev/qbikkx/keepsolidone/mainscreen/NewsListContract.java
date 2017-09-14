@@ -1,8 +1,7 @@
-package mvp.newslist;
+package dev.qbikkx.keepsolidone.mainscreen;
 
 import android.database.Cursor;
-
-import mvp.BaseView;
+import android.support.v4.app.LoaderManager;
 
 /**
  * @author <a href="mailto:qbikkx@gmail.com">qbikkx</a>
@@ -18,7 +17,5 @@ public interface NewsListContract {
 
     interface NewsListPresenter {
         void loadLatestNewsFromWeb();
-
-        Cursor loadNewsFromStorage();
     }
 }

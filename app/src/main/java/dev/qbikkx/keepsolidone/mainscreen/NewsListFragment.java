@@ -1,9 +1,12 @@
-package mvp.newslist;
+package dev.qbikkx.keepsolidone.mainscreen;
 
 import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v4.app.LoaderManager;
+import android.support.v4.content.CursorLoader;
+import android.support.v4.content.Loader;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatDialogFragment;
 import android.support.v7.widget.LinearLayoutManager;
@@ -15,22 +18,23 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 
-import dev.qbikkx.keepsolidone.NewsApplication;
 import dev.qbikkx.keepsolidone.R;
-import dev.qbikkx.keepsolidone.activities.NewsActivity;
-import dev.qbikkx.keepsolidone.adapters.NewsListAdapter;
-import dev.qbikkx.keepsolidone.listeners.OnNewsItemClickListener;
-import dev.qbikkx.keepsolidone.models.NewsResponce;
+import dev.qbikkx.keepsolidone.detailscreen.NewsActivity;
+import dev.qbikkx.keepsolidone.mainscreen.recycler.NewsListAdapter;
+import dev.qbikkx.keepsolidone.mainscreen.recycler.OnNewsItemClickListener;
 import dev.qbikkx.keepsolidone.storage.database.NewsDbSchema.NewsTable;
 import dev.qbikkx.keepsolidone.utils.ToastUtils;
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
 
 /**
  * @author <a href="mailto:qbikkx@gmail.com">qbikkx</a>
  */
-public class NewsListFragment extends AppCompatDialogFragment implements NewsListContract.NewsListView {
+public class NewsListFragment extends AppCompatDialogFragment
+        implements NewsListContract.NewsListView, LoaderManager.LoaderCallbacks<Cursor> {
+
+    private final static int DB_LOADER_ID = 1;
+
+    private String[] PROJECTION = {NewsTable.Cols._ID, NewsTable.Cols.TITLE,
+            NewsTable.Cols.PUBLISHED_AT, NewsTable.Cols.URL_TO_IMAGE, NewsTable.Cols.URL};
 
     NewsListContract.NewsListPresenter mPresenter;
 
@@ -54,7 +58,7 @@ public class NewsListFragment extends AppCompatDialogFragment implements NewsLis
         View rootView = inflater.inflate(R.layout.news_list_fragment, container, false);
         mRecyclerView = (RecyclerView) rootView.findViewById(R.id.rv_news);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
-        mAdapter = new NewsListAdapter(mPresenter.loadNewsFromStorage(),
+        mAdapter = new NewsListAdapter(null,
                 new OnNewsItemClickListener() {
                     @Override
                     public void onClick(View v, int position) {
@@ -95,11 +99,12 @@ public class NewsListFragment extends AppCompatDialogFragment implements NewsLis
 
     /**
      * Обновляем список каждый раз при появлении фрагмента на экране
+     * TODO: хуйня полная отвечаю
      */
     @Override
     public void onResume() {
         super.onResume();
-        mPresenter.loadLatestNewsFromWeb();
+        //mPresenter.loadLatestNewsFromWeb();
     }
 
     @Override
@@ -121,8 +126,23 @@ public class NewsListFragment extends AppCompatDialogFragment implements NewsLis
     }
 
     @Override
-    public void onDestroy() {
-        mAdapter.getCursor().close();
-        super.onDestroy();
+    public void onActivityCreated(Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+        getLoaderManager().initLoader(DB_LOADER_ID, null, this);
+    }
+
+    @Override
+    public Loader<Cursor> onCreateLoader(int id, Bundle args) {
+        return new NewsCursorLoader(getActivity(), PROJECTION);
+    }
+
+    @Override
+    public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
+        mAdapter.swapCursor(data);
+    }
+
+    @Override
+    public void onLoaderReset(Loader loader) {
+        mAdapter.changeCursor(null);
     }
 }

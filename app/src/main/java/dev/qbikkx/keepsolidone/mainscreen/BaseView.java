@@ -1,4 +1,4 @@
-package mvp;
+package dev.qbikkx.keepsolidone.mainscreen;
 
 /**
  * @author <a href="mailto:qbikkx@gmail.com">qbikkx</a>

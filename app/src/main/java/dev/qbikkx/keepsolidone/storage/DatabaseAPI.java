@@ -4,6 +4,7 @@ package dev.qbikkx.keepsolidone.storage;
  * @author <a href="mailto:qbikkx@gmail.com">qbikkx</a>
  */
 import android.database.Cursor;
+import android.net.Uri;
 
 import java.util.List;
 
@@ -22,4 +23,6 @@ public interface DatabaseAPI {
     void removeNews(News news);
 
     void clearAll();
+
+    Uri getContentUri();
 }

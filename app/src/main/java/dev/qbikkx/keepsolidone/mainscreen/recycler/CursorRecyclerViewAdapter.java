@@ -1,4 +1,4 @@
-package dev.qbikkx.keepsolidone.adapters;
+package dev.qbikkx.keepsolidone.mainscreen.recycler;
 /*
  * Copyright (C) 2014 skyfish.jy@gmail.com
  *

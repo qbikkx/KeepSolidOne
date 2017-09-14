@@ -20,6 +20,8 @@ public class NewsStorage implements DatabaseAPI {
     private static NewsStorage instance;
 
     private SQLiteDatabase mDatabase;
+    private NewsSQLiteOpenHelper mHelper;
+    private Context mContext;
 
     public static NewsStorage getInstance(Context ctx) {
         if (instance == null) {
@@ -29,8 +31,9 @@ public class NewsStorage implements DatabaseAPI {
     }
 
     private NewsStorage(Context ctx) {
-        Context context = ctx.getApplicationContext();
-        mDatabase = new NewsSQLiteOpenHelper(context).getWritableDatabase();
+        mContext = ctx.getApplicationContext();
+        mHelper = new NewsSQLiteOpenHelper(mContext);
+        mDatabase = mHelper.getWritableDatabase();
     }
 
     @Override
@@ -69,6 +72,11 @@ public class NewsStorage implements DatabaseAPI {
     @Override
     public void clearAll() {
         mDatabase.delete(NewsTable.NAME, null, null);
+    }
+
+    @Override
+    public Uri getContentUri() {
+        return Uri.fromFile(mContext.getDatabasePath(NewsSQLiteOpenHelper.DATABASE_NAME));
     }
 
     private static ContentValues getContentValues(News news) {
