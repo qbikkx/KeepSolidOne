@@ -5,7 +5,6 @@ import android.database.Cursor;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.LoaderManager;
-import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatDialogFragment;
@@ -18,6 +17,8 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
 import dev.qbikkx.keepsolidone.R;
 import dev.qbikkx.keepsolidone.detailscreen.NewsActivity;
 import dev.qbikkx.keepsolidone.mainscreen.recycler.NewsListAdapter;
@@ -38,8 +39,12 @@ public class NewsListFragment extends AppCompatDialogFragment
 
     NewsListContract.NewsListPresenter mPresenter;
 
+    @BindView(R.id.rv_news)
     private RecyclerView mRecyclerView;
+
     private NewsListAdapter mAdapter;
+
+    @BindView(R.id.srl_swipe_refresh)
     private SwipeRefreshLayout mSwipeRefreshLayout;
 
     public static NewsListFragment newInstance() {
@@ -56,7 +61,7 @@ public class NewsListFragment extends AppCompatDialogFragment
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.news_list_fragment, container, false);
-        mRecyclerView = (RecyclerView) rootView.findViewById(R.id.rv_news);
+        ButterKnife.bind(this, rootView);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         mAdapter = new NewsListAdapter(null,
                 new OnNewsItemClickListener() {
@@ -67,7 +72,6 @@ public class NewsListFragment extends AppCompatDialogFragment
                     }
                 });
         mRecyclerView.setAdapter(mAdapter);
-        mSwipeRefreshLayout = (SwipeRefreshLayout) rootView.findViewById(R.id.srl_swipe_refresh);
         mSwipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
@@ -99,7 +103,6 @@ public class NewsListFragment extends AppCompatDialogFragment
 
     /**
      * Обновляем список каждый раз при появлении фрагмента на экране
-     * TODO: хуйня полная отвечаю
      */
     @Override
     public void onResume() {

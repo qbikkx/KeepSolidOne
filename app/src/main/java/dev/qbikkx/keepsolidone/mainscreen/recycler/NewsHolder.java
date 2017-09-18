@@ -11,6 +11,9 @@ import com.squareup.picasso.Picasso;
 
 import java.util.Date;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
+import butterknife.OnClick;
 import dev.qbikkx.keepsolidone.R;
 import dev.qbikkx.keepsolidone.models.News;
 
@@ -20,15 +23,18 @@ import dev.qbikkx.keepsolidone.models.News;
 
 public class NewsHolder extends RecyclerView.ViewHolder {
 
+    @BindView(R.id.tv_news_item_title)
     private TextView mTitleTextView;
+
+    @BindView(R.id.tv_news_item_date)
     private TextView mDateTextView;
+
+    @BindView(R.id.iv_news_item_image)
     private ImageView mImageView;
 
     public NewsHolder(LayoutInflater inflater, ViewGroup parent, final OnNewsItemClickListener listener) {
         super(inflater.inflate(R.layout.news_list_item, parent, false));
-        mTitleTextView = (TextView) itemView.findViewById(R.id.tv_news_item_title);
-        mDateTextView = (TextView) itemView.findViewById(R.id.tv_news_item_date);
-        mImageView = (ImageView) itemView.findViewById(R.id.iv_news_item_image);
+        ButterKnife.bind(this, itemView);
         itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
