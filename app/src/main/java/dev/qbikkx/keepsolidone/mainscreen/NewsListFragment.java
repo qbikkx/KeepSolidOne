@@ -17,10 +17,14 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 
+import javax.inject.Inject;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import dagger.android.support.DaggerFragment;
 import dev.qbikkx.keepsolidone.R;
 import dev.qbikkx.keepsolidone.detailscreen.NewsActivity;
+import dev.qbikkx.keepsolidone.di.ActivityScoped;
 import dev.qbikkx.keepsolidone.mainscreen.recycler.NewsListAdapter;
 import dev.qbikkx.keepsolidone.mainscreen.recycler.OnNewsItemClickListener;
 import dev.qbikkx.keepsolidone.storage.database.NewsDbSchema.NewsTable;
@@ -29,23 +33,30 @@ import dev.qbikkx.keepsolidone.utils.ToastUtils;
 /**
  * @author <a href="mailto:qbikkx@gmail.com">qbikkx</a>
  */
-public class NewsListFragment extends AppCompatDialogFragment
-        implements NewsListContract.NewsListView, LoaderManager.LoaderCallbacks<Cursor> {
+@ActivityScoped
+public class NewsListFragment extends DaggerFragment
+        implements NewsListContract.View, LoaderManager.LoaderCallbacks<Cursor> {
+
+    @Inject
+    NewsListContract.Presenter mPresenter;
+
+
 
     private final static int DB_LOADER_ID = 1;
 
     private String[] PROJECTION = {NewsTable.Cols._ID, NewsTable.Cols.TITLE,
             NewsTable.Cols.PUBLISHED_AT, NewsTable.Cols.URL_TO_IMAGE, NewsTable.Cols.URL};
 
-    NewsListContract.NewsListPresenter mPresenter;
-
     @BindView(R.id.rv_news)
-    private RecyclerView mRecyclerView;
+    RecyclerView mRecyclerView;
 
     private NewsListAdapter mAdapter;
 
     @BindView(R.id.srl_swipe_refresh)
-    private SwipeRefreshLayout mSwipeRefreshLayout;
+    SwipeRefreshLayout mSwipeRefreshLayout;
+
+    @Inject
+    public NewsListFragment(){}
 
     public static NewsListFragment newInstance() {
         return new NewsListFragment();
@@ -59,14 +70,20 @@ public class NewsListFragment extends AppCompatDialogFragment
 
     @Nullable
     @Override
-    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View rootView = inflater.inflate(R.layout.news_list_fragment, container, false);
+    public android.view.View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        android.view.View rootView = inflater.inflate(R.layout.news_list_fragment, container, false);
         ButterKnife.bind(this, rootView);
+        return rootView;
+    }
+
+    @Override
+    public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         mAdapter = new NewsListAdapter(null,
                 new OnNewsItemClickListener() {
                     @Override
-                    public void onClick(View v, int position) {
+                    public void onClick(android.view.View v, int position) {
                         Intent intent = NewsActivity.newIntent(getActivity(), mAdapter.getItem(position).getUrl());
                         startActivity(intent);
                     }
@@ -78,22 +95,11 @@ public class NewsListFragment extends AppCompatDialogFragment
                 mPresenter.loadLatestNewsFromWeb();
             }
         });
-        return rootView;
-    }
-
-    @Override
-    public void setPresenter(NewsListContract.NewsListPresenter presenter) {
-        mPresenter = presenter;
     }
 
     @Override
     public void setRefreshing(boolean isRefreshing) {
         mSwipeRefreshLayout.setRefreshing(isRefreshing);
-    }
-
-    @Override
-    public void swapCursor(Cursor cursor) {
-        mAdapter.swapCursor(cursor);
     }
 
     @Override
@@ -107,7 +113,14 @@ public class NewsListFragment extends AppCompatDialogFragment
     @Override
     public void onResume() {
         super.onResume();
+        mPresenter.takeView(this);
         //mPresenter.loadLatestNewsFromWeb();
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        mPresenter.dropView();
     }
 
     @Override

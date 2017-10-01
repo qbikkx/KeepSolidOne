@@ -1,21 +1,22 @@
 package dev.qbikkx.keepsolidone.mainscreen;
 
-import android.database.Cursor;
-import android.support.v4.app.LoaderManager;
+import dev.qbikkx.keepsolidone.BasePresenter;
+import dev.qbikkx.keepsolidone.BaseView;
 
 /**
  * @author <a href="mailto:qbikkx@gmail.com">qbikkx</a>
  */
 public interface NewsListContract {
-    interface NewsListView extends BaseView<NewsListPresenter> {
-        void setRefreshing(boolean isRefreshing);
 
-        void swapCursor(Cursor cursor);
+    interface View extends BaseView<Presenter> {
+        void setRefreshing(boolean isRefreshing);
 
         void showToast(int stringId);
     }
 
-    interface NewsListPresenter {
+    interface Presenter extends BasePresenter<View> {
+
         void loadLatestNewsFromWeb();
+
     }
 }

@@ -1,15 +1,14 @@
 package dev.qbikkx.keepsolidone.mainscreen;
 
-import android.database.Cursor;
-import android.os.Bundle;
-import android.support.v4.app.LoaderManager;
-import android.support.v4.content.CursorLoader;
-import android.support.v4.content.Loader;
+
+import javax.annotation.Nullable;
+import javax.inject.Inject;
 
 import dev.qbikkx.keepsolidone.NewsApplication;
 import dev.qbikkx.keepsolidone.R;
+import dev.qbikkx.keepsolidone.di.ActivityScoped;
 import dev.qbikkx.keepsolidone.models.NewsResponce;
-import dev.qbikkx.keepsolidone.storage.database.NewsDbSchema.NewsTable;
+import dev.qbikkx.keepsolidone.network.NewsAPIService;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -17,18 +16,21 @@ import retrofit2.Response;
 /**
  * @author <a href="mailto:qbikkx@gmail.com">qbikkx</a>
  */
-public class NewsListPresenterImpl implements NewsListContract.NewsListPresenter {
-    private NewsListContract.NewsListView mView;
+@ActivityScoped
+public class NewsListPresenter implements NewsListContract.Presenter {
+    @Nullable
+    private NewsListContract.View mView;
 
-    public NewsListPresenterImpl(NewsListContract.NewsListView view) {
-        mView = view;
-        mView.setPresenter(this);
-    }
+    @Inject
+    NewsListPresenter(){}
+
+    @Inject
+    NewsAPIService newsAPIService;
 
     @Override
     public void loadLatestNewsFromWeb() {
         mView.setRefreshing(true);
-        NewsApplication.getWebAPI().getNews("latest").enqueue(new Callback<NewsResponce>() {
+        newsAPIService.getNews("latest").enqueue(new Callback<NewsResponce>() {
             @Override
             public void onResponse(Call<NewsResponce> call, Response<NewsResponce> response) {
                 NewsResponce newsResponce = response.body();
@@ -50,5 +52,15 @@ public class NewsListPresenterImpl implements NewsListContract.NewsListPresenter
                 t.printStackTrace();
             }
         });
+    }
+
+    @Override
+    public void takeView(NewsListContract.View view) {
+        mView = view;
+    }
+
+    @Override
+    public void dropView() {
+        mView = null;
     }
 }

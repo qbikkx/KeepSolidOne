@@ -11,7 +11,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity
-            android:name=".mainscreen.MainActivity"
+            android:name=".mainscreen.NewsListActivity"
             android:label="@string/main_activity_label">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -21,7 +21,7 @@
         </activity>
         <activity
             android:name=".detailscreen.NewsActivity"
-            android:parentActivityName=".mainscreen.MainActivity"
+            android:parentActivityName=".mainscreen.NewsListActivity"
             android:configChanges="orientation|screenSize"
             android:label="@string/user_activity_label" />
     </application>

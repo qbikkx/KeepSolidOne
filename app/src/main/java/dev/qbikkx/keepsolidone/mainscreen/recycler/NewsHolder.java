@@ -24,13 +24,13 @@ import dev.qbikkx.keepsolidone.models.News;
 public class NewsHolder extends RecyclerView.ViewHolder {
 
     @BindView(R.id.tv_news_item_title)
-    private TextView mTitleTextView;
+    TextView mTitleTextView;
 
     @BindView(R.id.tv_news_item_date)
-    private TextView mDateTextView;
+    TextView mDateTextView;
 
     @BindView(R.id.iv_news_item_image)
-    private ImageView mImageView;
+    ImageView mImageView;
 
     public NewsHolder(LayoutInflater inflater, ViewGroup parent, final OnNewsItemClickListener listener) {
         super(inflater.inflate(R.layout.news_list_item, parent, false));
